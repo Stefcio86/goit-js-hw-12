@@ -1,4 +1,3 @@
-</html>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,20 +5,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Image Search</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.1.3/simple-lightbox.min.css">
-
-  <rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMVD4or1lbzR0zRYV0qjzj3tfVhB/KtXJ4kn1u/" crossorigin="anonymous">
 </head>
 
 <body>
-  <form id="search-form">
-    <input type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." />
-    <button type="submit">Search</button>
-  </form>
-  <div class="gallery"></div>
-  <button class="load-more">Load more</button>
-  <script type="module" src="main.js"></script>
+  <header>
+    <form id="search-form">
+      <input type="text" name="query" placeholder="Search images..." required />
+      <button type="submit"><i class="fas fa-search"></i></button>
+    </form>
+  </header>
+
+  <main>
+    <div id="gallery" class="gallery"></div>
+    <button id="load-more" class="load-more hidden">Load more</button>
+  </main>
+
+  <script type="module" src="./js/main.js"></script>
 </body>
 
 </html>
