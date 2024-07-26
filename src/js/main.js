@@ -130,27 +130,3 @@ function renderImages(images) {
   gallery.insertAdjacentHTML('beforeend', markup);
   simpleLightbox.refresh();
 }
-
-function renderImages(images) {
-  const markup = images
-    .map(image => {
-      return `<a href="${image.largeImageURL}" class="gallery-item">
-                    <img src="${image.webformatURL}" alt="${image.tags}" />
-                    <div class="info">
-                        <p><b>Likes</b>: ${image.likes}</p>
-                        <p><b>Views</b>: ${image.views}</p>
-                        <p><b>Comments</b>: ${image.comments}</p>
-                        <p><b>Downloads</b>: ${image.downloads}</p>
-                    </div>
-                </a>`;
-    })
-    .join('');
-  galleryDiv.insertAdjacentHTML('beforeend', markup);
-
-  const { height: cardHeight } =
-    galleryDiv.firstElementChild.getBoundingClientRect();
-  window.scrollBy({
-    top: cardHeight * 2,
-    behavior: 'smooth',
-  });
-}
