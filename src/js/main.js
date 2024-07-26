@@ -58,6 +58,9 @@ async function onSearch(event) {
     console.error(error);
     Notiflix.Notify.failure('Something went wrong. Please try again.');
   }
+
+  // Clear the search input field
+  searchForm.reset();
 }
 
 async function onLoadMore() {
@@ -123,10 +126,22 @@ function renderImages(images) {
                 <img src="${webformatURL}" alt="${tags}" class="gallery-item__image"/>
             </a>
             <div class="info">
-                <p><b>Likes:</b> ${likes}</p>
-                <p><b>Views:</b> ${views}</p>
-                <p><b>Comments:</b> ${comments}</p>
-                <p><b>Downloads:</b> ${downloads}</p>
+                <div class="info-column">
+                    <p class="label">Likes</p>
+                    <p class="value">${likes}</p>
+                </div>
+                <div class="info-column">
+                    <p class="label">Views</p>
+                    <p class="value">${views}</p>
+                </div>
+                <div class="info-column">
+                    <p class="label">Comments</p>
+                    <p class="value">${comments}</p>
+                </div>
+                <div class="info-column">
+                    <p class="label">Downloads</p>
+                    <p class="value">${downloads}</p>
+                </div>
             </div>
         </div>
     `
