@@ -5,25 +5,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Image Search</title>
-  <link rel="stylesheet" href="./css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMVD4or1lbzR0zRYV0qjzj3tfVhB/KtXJ4kn1u/" crossorigin="anonymous">
+    integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMc/Jm9hAxO0F2CZOc97By9Vg/5FQbcGlmZx5jc" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-  <header>
-    <form id="search-form">
-      <input type="text" name="query" placeholder="Search images..." required />
-      <button type="submit"><i class="fas fa-search"></i></button>
-    </form>
-  </header>
-
-  <main>
-    <div id="gallery" class="gallery"></div>
-    <button id="load-more" class="load-more hidden">Load more</button>
-  </main>
-
-  <script type="module" src="./js/main.js"></script>
+  <form class="search-form">
+    <input type="text" name="searchQuery" placeholder="Search images..." required>
+    <button type="submit">Search</button>
+  </form>
+  <div class="loader hidden">Loading...</div>
+  <div id="gallery"></div>
+  <button class="hidden">Load More</button>
+  <script src="main.js" type="module"></script>
 </body>
 
 </html>

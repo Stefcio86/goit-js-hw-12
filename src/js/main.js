@@ -21,8 +21,13 @@ const simpleLightbox = new SimpleLightbox('.gallery-item a', {
   captionDelay: 250,
 });
 
-searchForm.addEventListener('submit', onSearch);
-loadMoreButton.addEventListener('click', onLoadMore);
+if (searchForm) {
+  searchForm.addEventListener('submit', onSearch);
+}
+
+if (loadMoreButton) {
+  loadMoreButton.addEventListener('click', onLoadMore);
+}
 
 async function onSearch(event) {
   event.preventDefault();
