@@ -11,23 +11,20 @@ const PER_PAGE = 40;
 
 let query = '';
 let page = 1;
+let totalHits = 0;
 
 const searchForm = document.querySelector('.search-form');
-const loadMoreButton = document.querySelector('button.hidden');
+const loadMoreButton = document.querySelector('.load-more');
 const gallery = document.querySelector('#gallery');
 const loader = document.querySelector('.loader');
+
 const simpleLightbox = new SimpleLightbox('.gallery-item a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
 
-if (searchForm) {
-  searchForm.addEventListener('submit', onSearch);
-}
-
-if (loadMoreButton) {
-  loadMoreButton.addEventListener('click', onLoadMore);
-}
+searchForm.addEventListener('submit', onSearch);
+loadMoreButton.addEventListener('click', onLoadMore);
 
 async function onSearch(event) {
   event.preventDefault();
@@ -41,37 +38,38 @@ async function onSearch(event) {
   page = 1;
   gallery.innerHTML = '';
   loadMoreButton.classList.add('hidden');
+  totalHits = 0;
 
   try {
-    const images = await fetchImages(query, page);
-    if (images.length === 0) {
+    const response = await fetchImages(query, page);
+    totalHits = response.totalHits;
+
+    if (response.hits.length === 0) {
       iziToast.error({
         title: 'Sorry',
         message: 'No images found. Please try again!',
         position: 'topRight',
       });
     } else {
-      renderImages(images);
-      loadMoreButton.classList.remove('hidden');
+      renderImages(response.hits);
+      if (response.hits.length >= PER_PAGE) {
+        loadMoreButton.classList.remove('hidden');
+      }
     }
   } catch (error) {
     console.error(error);
     Notiflix.Notify.failure('Something went wrong. Please try again.');
   }
-
-  // Clear the search input field
-  searchForm.reset();
 }
 
 async function onLoadMore() {
   page += 1;
 
   try {
-    const images = await fetchImages(query, page);
-    renderImages(images);
+    const response = await fetchImages(query, page);
+    renderImages(response.hits);
 
-    const totalPages = Math.ceil(images.totalHits / PER_PAGE);
-    if (page >= totalPages) {
+    if (page * PER_PAGE >= totalHits || response.hits.length < PER_PAGE) {
       loadMoreButton.classList.add('hidden');
       iziToast.info({
         title: 'End',
@@ -83,7 +81,7 @@ async function onLoadMore() {
     const { height: cardHeight } =
       gallery.firstElementChild.getBoundingClientRect();
     window.scrollBy({
-      top: cardHeight * 2,
+      top: cardHeight * 3, // Increase the scroll value for a larger scroll
       behavior: 'smooth',
     });
   } catch (error) {
@@ -106,7 +104,7 @@ async function fetchImages(query, page) {
     },
   });
   loader.classList.add('hidden');
-  return response.data.hits;
+  return response.data;
 }
 
 function renderImages(images) {
@@ -121,30 +119,30 @@ function renderImages(images) {
         comments,
         downloads,
       }) => `
-        <div class="gallery-item">
-            <a href="${largeImageURL}">
-                <img src="${webformatURL}" alt="${tags}" class="gallery-item__image"/>
-            </a>
-            <div class="info">
-                <div class="info-column">
-                    <p class="label">Likes</p>
-                    <p class="value">${likes}</p>
-                </div>
-                <div class="info-column">
-                    <p class="label">Views</p>
-                    <p class="value">${views}</p>
-                </div>
-                <div class="info-column">
-                    <p class="label">Comments</p>
-                    <p class="value">${comments}</p>
-                </div>
-                <div class="info-column">
-                    <p class="label">Downloads</p>
-                    <p class="value">${downloads}</p>
-                </div>
-            </div>
+    <div class="gallery-item">
+      <a href="${largeImageURL}">
+        <img src="${webformatURL}" alt="${tags}" class="gallery-item__image"/>
+      </a>
+      <div class="info">
+        <div class="info-column">
+          <p class="label">Likes</p>
+          <p class="value">${likes}</p>
         </div>
-    `
+        <div class="info-column">
+          <p class="label">Views</p>
+          <p class="value">${views}</p>
+        </div>
+        <div class="info-column">
+          <p class="label">Comments</p>
+          <p class="value">${comments}</p>
+        </div>
+        <div class="info-column">
+          <p class="label">Downloads</p>
+          <p class="value">${downloads}</p>
+        </div>
+      </div>
+    </div>
+  `
     )
     .join('');
   gallery.insertAdjacentHTML('beforeend', markup);
